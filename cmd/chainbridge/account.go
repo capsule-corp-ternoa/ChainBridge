@@ -11,11 +11,11 @@ import (
 	"path/filepath"
 
 	"github.com/ChainSafe/ChainBridge/config"
-	"github.com/ChainSafe/chainbridge-utils/crypto"
-	"github.com/ChainSafe/chainbridge-utils/crypto/secp256k1"
-	"github.com/ChainSafe/chainbridge-utils/crypto/sr25519"
-	"github.com/ChainSafe/chainbridge-utils/keystore"
 	log "github.com/ChainSafe/log15"
+	"github.com/capsule-corp-ternoa/chainbridge-utils/crypto"
+	"github.com/capsule-corp-ternoa/chainbridge-utils/crypto/secp256k1"
+	"github.com/capsule-corp-ternoa/chainbridge-utils/crypto/sr25519"
+	"github.com/capsule-corp-ternoa/chainbridge-utils/keystore"
 	gokeystore "github.com/ethereum/go-ethereum/accounts/keystore"
 	"github.com/urfave/cli/v2"
 )
@@ -159,7 +159,11 @@ func importPrivKey(ctx *cli.Context, keytype, datadir, key string, password []by
 	if keytype == crypto.Sr25519Type {
 		// generate sr25519 keys
 		network := ctx.String(config.SubkeyNetworkFlag.Name)
-		kp, err = sr25519.NewKeypairFromSeed(key, network)
+		if network == "substrate" || network == "" {
+			kp, err = sr25519.NewKeypairFromSeed(key, 42)
+		} else {
+			return "", fmt.Errorf("unknown network %s", network)
+		}
 		if err != nil {
 			return "", fmt.Errorf("could not generate sr25519 keypair from given string: %w", err)
 		}
@@ -350,7 +354,11 @@ func generateKeypair(keytype, datadir string, password []byte, subNetwork string
 
 	if keytype == crypto.Sr25519Type {
 		// generate sr25519 keys
-		kp, err = sr25519.GenerateKeypair(subNetwork)
+		if subNetwork == "substrate" || subNetwork == "" {
+			kp, err = sr25519.GenerateKeypair(42)
+		} else {
+			return "", fmt.Errorf("unknown network %s", subNetwork)
+		}
 		if err != nil {
 			return "", fmt.Errorf("could not generate sr25519 keypair: %w", err)
 		}

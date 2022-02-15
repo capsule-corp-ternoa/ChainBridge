@@ -4,8 +4,8 @@
 package utils
 
 import (
-	events "github.com/ChainSafe/chainbridge-substrate-events"
-	"github.com/centrifuge/go-substrate-rpc-client/types"
+	events "github.com/capsule-corp-ternoa/chainbridge-substrate-events"
+	"github.com/centrifuge/go-substrate-rpc-client/v4/types"
 )
 
 type EventErc721Minted struct {
@@ -169,9 +169,18 @@ type EventRegistryTmp struct {
 	Topics []types.Hash
 }
 
+// EventDeposit is emitted when an account withdraw some free balance
+type EventBalancesWithdraw struct {
+	Phase   types.Phase
+	Who     types.AccountID
+	Balance types.U128
+	Topics  []types.Hash
+}
+
 type Events struct {
 	types.EventRecords
 	events.Events
+	Balances_Withdraw                []EventBalancesWithdraw               //nolint:stylecheck,golint
 	Erc721_Minted                    []EventErc721Minted                   //nolint:stylecheck,golint
 	Erc721_Transferred               []EventErc721Transferred              //nolint:stylecheck,golint
 	Erc721_Burned                    []EventErc721Burned                   //nolint:stylecheck,golint

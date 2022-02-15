@@ -8,8 +8,8 @@ import (
 	"testing"
 
 	utils "github.com/ChainSafe/ChainBridge/shared/ethereum"
-	"github.com/ChainSafe/chainbridge-utils/msg"
 	"github.com/ChainSafe/log15"
+	"github.com/capsule-corp-ternoa/chainbridge-utils/msg"
 	"github.com/ethereum/go-ethereum/common"
 )
 

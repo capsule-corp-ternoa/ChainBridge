@@ -6,12 +6,13 @@ package ethereum
 import (
 	"context"
 	"errors"
+	"fmt"
 	"math/big"
 	"time"
 
 	utils "github.com/ChainSafe/ChainBridge/shared/ethereum"
-	"github.com/ChainSafe/chainbridge-utils/msg"
 	log "github.com/ChainSafe/log15"
+	"github.com/capsule-corp-ternoa/chainbridge-utils/msg"
 )
 
 // Number of blocks to wait for an finalization event
@@ -108,6 +109,7 @@ func (w *writer) createErc20Proposal(m msg.Message) bool {
 		w.log.Error("Unable to fetch latest block", "err", err)
 		return false
 	}
+	fmt.Println("LatestBlock: ", latestBlock)
 
 	// watch for execution event
 	go w.watchThenExecute(m, data, dataHash, latestBlock)
@@ -211,13 +213,16 @@ func (w *writer) watchThenExecute(m msg.Message, data []byte, dataHash [32]byte,
 				}
 			}
 
+			var endBlock big.Int
+			endBlock.Add(latestBlock, big.NewInt(10))
 			// query for logs
-			query := buildQuery(w.cfg.bridgeContract, utils.ProposalEvent, latestBlock, latestBlock)
+			query := buildQuery(w.cfg.bridgeContract, utils.ProposalEvent, latestBlock, &endBlock)
 			evts, err := w.conn.Client().FilterLogs(context.Background(), query)
 			if err != nil {
 				w.log.Error("Failed to fetch logs", "err", err)
 				return
 			}
+			fmt.Println("evets: ", len(evts))
 
 			// execute the proposal once we find the matching finalized event
 			for _, evt := range evts {

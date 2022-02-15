@@ -9,13 +9,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ChainSafe/chainbridge-utils/core"
+	"github.com/capsule-corp-ternoa/chainbridge-utils/core"
 
 	utils "github.com/ChainSafe/ChainBridge/shared/substrate"
-	metrics "github.com/ChainSafe/chainbridge-utils/metrics/types"
-	"github.com/ChainSafe/chainbridge-utils/msg"
 	"github.com/ChainSafe/log15"
-	"github.com/centrifuge/go-substrate-rpc-client/types"
+	metrics "github.com/capsule-corp-ternoa/chainbridge-utils/metrics/types"
+	"github.com/capsule-corp-ternoa/chainbridge-utils/msg"
+	"github.com/centrifuge/go-substrate-rpc-client/v4/types"
 )
 
 var _ core.Writer = &writer{}
