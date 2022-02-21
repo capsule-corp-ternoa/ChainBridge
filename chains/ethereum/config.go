@@ -23,8 +23,6 @@ const DefaultGasMultiplier = 1
 var (
 	BridgeOpt             = "bridge"
 	Erc20HandlerOpt       = "erc20Handler"
-	Erc721HandlerOpt      = "erc721Handler"
-	GenericHandlerOpt     = "genericHandler"
 	MaxGasPriceOpt        = "maxGasPrice"
 	GasLimitOpt           = "gasLimit"
 	GasMultiplier         = "gasMultiplier"
@@ -35,46 +33,42 @@ var (
 
 // Config encapsulates all necessary parameters in ethereum compatible forms
 type Config struct {
-	name                   string      // Human-readable chain name
-	id                     msg.ChainId // ChainID
-	endpoint               string      // url for rpc endpoint
-	from                   string      // address of key to use
-	keystorePath           string      // Location of keyfiles
-	blockstorePath         string
-	freshStart             bool // Disables loading from blockstore at start
-	bridgeContract         common.Address
-	erc20HandlerContract   common.Address
-	erc721HandlerContract  common.Address
-	genericHandlerContract common.Address
-	gasLimit               *big.Int
-	maxGasPrice            *big.Int
-	gasMultiplier          *big.Float
-	http                   bool // Config for type of connection
-	startBlock             *big.Int
-	blockConfirmations     *big.Int
+	name                 string      // Human-readable chain name
+	id                   msg.ChainId // ChainID
+	endpoint             string      // url for rpc endpoint
+	from                 string      // address of key to use
+	keystorePath         string      // Location of keyfiles
+	blockstorePath       string
+	freshStart           bool // Disables loading from blockstore at start
+	bridgeContract       common.Address
+	erc20HandlerContract common.Address
+	gasLimit             *big.Int
+	maxGasPrice          *big.Int
+	gasMultiplier        *big.Float
+	http                 bool // Config for type of connection
+	startBlock           *big.Int
+	blockConfirmations   *big.Int
 }
 
 // parseChainConfig uses a core.ChainConfig to construct a corresponding Config
 func parseChainConfig(chainCfg *core.ChainConfig) (*Config, error) {
 
 	config := &Config{
-		name:                   chainCfg.Name,
-		id:                     chainCfg.Id,
-		endpoint:               chainCfg.Endpoint,
-		from:                   chainCfg.From,
-		keystorePath:           chainCfg.KeystorePath,
-		blockstorePath:         chainCfg.BlockstorePath,
-		freshStart:             chainCfg.FreshStart,
-		bridgeContract:         utils.ZeroAddress,
-		erc20HandlerContract:   utils.ZeroAddress,
-		erc721HandlerContract:  utils.ZeroAddress,
-		genericHandlerContract: utils.ZeroAddress,
-		gasLimit:               big.NewInt(DefaultGasLimit),
-		maxGasPrice:            big.NewInt(DefaultGasPrice),
-		gasMultiplier:          big.NewFloat(DefaultGasMultiplier),
-		http:                   false,
-		startBlock:             big.NewInt(0),
-		blockConfirmations:     big.NewInt(0),
+		name:                 chainCfg.Name,
+		id:                   chainCfg.Id,
+		endpoint:             chainCfg.Endpoint,
+		from:                 chainCfg.From,
+		keystorePath:         chainCfg.KeystorePath,
+		blockstorePath:       chainCfg.BlockstorePath,
+		freshStart:           chainCfg.FreshStart,
+		bridgeContract:       utils.ZeroAddress,
+		erc20HandlerContract: utils.ZeroAddress,
+		gasLimit:             big.NewInt(DefaultGasLimit),
+		maxGasPrice:          big.NewInt(DefaultGasPrice),
+		gasMultiplier:        big.NewFloat(DefaultGasMultiplier),
+		http:                 false,
+		startBlock:           big.NewInt(0),
+		blockConfirmations:   big.NewInt(0),
 	}
 
 	if contract, ok := chainCfg.Opts[BridgeOpt]; ok && contract != "" {
@@ -86,12 +80,6 @@ func parseChainConfig(chainCfg *core.ChainConfig) (*Config, error) {
 
 	config.erc20HandlerContract = common.HexToAddress(chainCfg.Opts[Erc20HandlerOpt])
 	delete(chainCfg.Opts, Erc20HandlerOpt)
-
-	config.erc721HandlerContract = common.HexToAddress(chainCfg.Opts[Erc721HandlerOpt])
-	delete(chainCfg.Opts, Erc721HandlerOpt)
-
-	config.genericHandlerContract = common.HexToAddress(chainCfg.Opts[GenericHandlerOpt])
-	delete(chainCfg.Opts, GenericHandlerOpt)
 
 	if gasPrice, ok := chainCfg.Opts[MaxGasPriceOpt]; ok {
 		price := big.NewInt(0)

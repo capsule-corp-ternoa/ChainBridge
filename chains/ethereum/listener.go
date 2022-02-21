@@ -12,8 +12,6 @@ import (
 
 	"github.com/ChainSafe/ChainBridge/bindings/Bridge"
 	"github.com/ChainSafe/ChainBridge/bindings/ERC20Handler"
-	"github.com/ChainSafe/ChainBridge/bindings/ERC721Handler"
-	"github.com/ChainSafe/ChainBridge/bindings/GenericHandler"
 	"github.com/ChainSafe/ChainBridge/chains"
 	utils "github.com/ChainSafe/ChainBridge/shared/ethereum"
 	"github.com/ChainSafe/log15"
@@ -30,20 +28,18 @@ var BlockRetryLimit = 5
 var ErrFatalPolling = errors.New("listener block polling failed")
 
 type listener struct {
-	cfg                    Config
-	conn                   Connection
-	router                 chains.Router
-	bridgeContract         *Bridge.Bridge // instance of bound bridge contract
-	erc20HandlerContract   *ERC20Handler.ERC20Handler
-	erc721HandlerContract  *ERC721Handler.ERC721Handler
-	genericHandlerContract *GenericHandler.GenericHandler
-	log                    log15.Logger
-	blockstore             blockstore.Blockstorer
-	stop                   <-chan int
-	sysErr                 chan<- error // Reports fatal error to core
-	latestBlock            metrics.LatestBlock
-	metrics                *metrics.ChainMetrics
-	blockConfirmations     *big.Int
+	cfg                  Config
+	conn                 Connection
+	router               chains.Router
+	bridgeContract       *Bridge.Bridge // instance of bound bridge contract
+	erc20HandlerContract *ERC20Handler.ERC20Handler
+	log                  log15.Logger
+	blockstore           blockstore.Blockstorer
+	stop                 <-chan int
+	sysErr               chan<- error // Reports fatal error to core
+	latestBlock          metrics.LatestBlock
+	metrics              *metrics.ChainMetrics
+	blockConfirmations   *big.Int
 }
 
 // NewListener creates and returns a listener
@@ -178,10 +174,6 @@ func (l *listener) getDepositEventsForBlock(latestBlock *big.Int) error {
 
 		if addr == l.cfg.erc20HandlerContract {
 			m, err = l.handleErc20DepositedEvent(destId, nonce)
-		} else if addr == l.cfg.erc721HandlerContract {
-			m, err = l.handleErc721DepositedEvent(destId, nonce)
-		} else if addr == l.cfg.genericHandlerContract {
-			m, err = l.handleGenericDepositedEvent(destId, nonce)
 		} else {
 			l.log.Error("event has unrecognized handler", "handler", addr.Hex())
 			return nil

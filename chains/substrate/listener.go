@@ -218,18 +218,6 @@ func (l *listener) handleEvents(evts utils.Events) {
 			l.submitMessage(l.subscriptions[FungibleTransfer](evt, l.log))
 		}
 	}
-	if l.subscriptions[NonFungibleTransfer] != nil {
-		for _, evt := range evts.ChainBridge_NonFungibleTransfer {
-			l.log.Trace("Handling NonFungibleTransfer event")
-			l.submitMessage(l.subscriptions[NonFungibleTransfer](evt, l.log))
-		}
-	}
-	if l.subscriptions[GenericTransfer] != nil {
-		for _, evt := range evts.ChainBridge_GenericTransfer {
-			l.log.Trace("Handling GenericTransfer event")
-			l.submitMessage(l.subscriptions[GenericTransfer](evt, l.log))
-		}
-	}
 
 	if len(evts.System_CodeUpdated) > 0 {
 		l.log.Trace("Received CodeUpdated event")

@@ -29,12 +29,10 @@ func TestChain_ListenerShutdownOnFailure(t *testing.T) {
 		BlockstorePath: "",
 		FreshStart:     true,
 		Opts: map[string]string{
-			"bridge":         contracts.BridgeAddress.Hex(),
-			"erc20Handler":   contracts.ERC20HandlerAddress.Hex(),
-			"erc721Handler":  contracts.ERC721HandlerAddress.Hex(),
-			"genericHandler": contracts.GenericHandlerAddress.Hex(),
-			"gasLimit":       big.NewInt(DefaultGasLimit).String(),
-			"maxGasPrice":    big.NewInt(DefaultGasPrice).String(),
+			"bridge":       contracts.BridgeAddress.Hex(),
+			"erc20Handler": contracts.ERC20HandlerAddress.Hex(),
+			"gasLimit":     big.NewInt(DefaultGasLimit).String(),
+			"maxGasPrice":  big.NewInt(DefaultGasPrice).String(),
 		},
 	}
 	sysErr := make(chan error)
@@ -88,12 +86,10 @@ func TestChain_WriterShutdownOnFailure(t *testing.T) {
 		BlockstorePath: "",
 		FreshStart:     true,
 		Opts: map[string]string{
-			"bridge":         contracts.BridgeAddress.Hex(),
-			"erc20Handler":   contracts.ERC20HandlerAddress.Hex(),
-			"erc721Handler":  contracts.ERC721HandlerAddress.Hex(),
-			"genericHandler": contracts.GenericHandlerAddress.Hex(),
-			"gasLimit":       big.NewInt(DefaultGasLimit).String(),
-			"maxGasPrice":    big.NewInt(DefaultGasPrice).String(),
+			"bridge":       contracts.BridgeAddress.Hex(),
+			"erc20Handler": contracts.ERC20HandlerAddress.Hex(),
+			"gasLimit":     big.NewInt(DefaultGasLimit).String(),
+			"maxGasPrice":  big.NewInt(DefaultGasPrice).String(),
 		},
 	}
 	sysErr := make(chan error)

@@ -5,7 +5,6 @@ package utils
 
 import (
 	"fmt"
-	"math/big"
 
 	"github.com/ChainSafe/log15"
 	"github.com/capsule-corp-ternoa/chainbridge-utils/msg"
@@ -77,16 +76,6 @@ func (c *Client) InitiateNativeTransfer(amount types.U128, recipient []byte, des
 	return SubmitTx(c, ExampleTransferNativeMethod, amount, recipient, types.U8(destId))
 }
 
-func (c *Client) InitiateNonFungibleTransfer(tokenId types.U256, recipient []byte, destId msg.ChainId) error {
-	log15.Info("Initiating Substrate nft transfer", "tokenId", tokenId, "recipient", recipient, "destId", destId)
-	return SubmitTx(c, ExampleTransferErc721Method, recipient, tokenId, types.U8(destId))
-}
-
-func (c *Client) InitiateHashTransfer(hash types.Hash, destId msg.ChainId) error {
-	log15.Info("Initiating hash transfer", "hash", hash.Hex())
-	return SubmitTx(c, ExampleTransferHashMethod, hash, types.U8(destId))
-}
-
 // Call creation methods for batching
 
 func (c *Client) NewSudoCall(call types.Call) (types.Call, error) {
@@ -137,28 +126,6 @@ func (c *Client) LatestBlock() (uint64, error) {
 		return 0, err
 	}
 	return uint64(head.Number), nil
-}
-
-func (c *Client) MintErc721(tokenId *big.Int, metadata []byte, recipient *signature.KeyringPair) error {
-	fmt.Printf("Mint info: account %x amount: %x meta: %x\n", recipient.PublicKey, types.NewU256(*tokenId), types.Bytes(metadata))
-	return SubmitSudoTx(c, Erc721MintMethod, types.NewAccountID(recipient.PublicKey), types.NewU256(*tokenId), types.Bytes(metadata))
-}
-
-func (c *Client) OwnerOf(tokenId *big.Int) (types.AccountID, error) {
-	var owner types.AccountID
-	tokenIdBz, err := types.EncodeToBytes(types.NewU256(*tokenId))
-	if err != nil {
-		return types.AccountID{}, err
-	}
-
-	exists, err := QueryStorage(c, "TokenStorage", "TokenOwner", tokenIdBz, nil, &owner)
-	if err != nil {
-		return types.AccountID{}, err
-	}
-	if !exists {
-		return types.AccountID{}, fmt.Errorf("token %s doesn't have an owner", tokenId.String())
-	}
-	return owner, nil
 }
 
 func (c *Client) GetDepositNonce(chain msg.ChainId) (uint64, error) {
