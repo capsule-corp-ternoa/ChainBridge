@@ -72,6 +72,7 @@ func (c *Client) RegisterResource(id msg.ResourceId, method string) error {
 // Standard transfer calls
 
 func (c *Client) InitiateNativeTransfer(amount types.U128, recipient []byte, destId msg.ChainId) error {
+	fmt.Println("---- Initiate Native Transfer ----")
 	log15.Info("Initiating Substrate native transfer", "amount", amount, "recipient", fmt.Sprintf("%x", recipient), "destId", destId)
 	return SubmitTx(c, ExampleTransferNativeMethod, amount, recipient, types.U8(destId))
 }

@@ -64,7 +64,7 @@ func TestMain(m *testing.M) {
 
 	var nativeTokenId []byte
 
-	err = utils.QueryConst(client, "Example", "NativeTokenId", &nativeTokenId)
+	err = utils.QueryConst(client, "ERC20Bridge", "NativeTokenId", &nativeTokenId)
 	if err != nil {
 		panic(err)
 	}
