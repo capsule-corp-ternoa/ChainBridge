@@ -80,7 +80,7 @@ func compareMessage(expected, actual msg.Message) error {
 func Test_FungibleTransferEvent(t *testing.T) {
 	// Construct our expected message
 	var rId msg.ResourceId
-	subtest.QueryConst(t, context.client, "Example", "NativeTokenId", &rId)
+	subtest.QueryConst(t, context.client, "ERC20Bridge", "NativeTokenId", &rId)
 	amount := big.NewInt(1000000)
 	recipient := BobKey.PublicKey
 	context.latestOutNonce = context.latestOutNonce + 1

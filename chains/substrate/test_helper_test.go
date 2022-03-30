@@ -15,7 +15,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
-const TestEndpoint = "ws://127.0.0.1:9944"
+const TestEndpoint = "ws://163.172.170.245:9944"
 
 const TestRelayerThreshold = 2
 const TestChainId = 1
@@ -37,7 +37,7 @@ var relayers = []types.AccountID{
 
 var resources = map[msg.ResourceId]utils.Method{
 	// These are taken from the Polkadot JS UI (Chain State -> Constants)
-	msg.ResourceIdFromSlice(hexutil.MustDecode("0x000000000000000000000000000000c76ebe4a02bbc34786d860b355f5a5ce00")): utils.ExampleTransferMethod,
+	msg.ResourceIdFromSlice(hexutil.MustDecode("0x000000000000000000000000000000c76ebe4a02bbc34786d860b355f5a5ce00")): utils.ERC20BridgeTransferMethod,
 }
 
 const relayerThreshold = 2

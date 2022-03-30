@@ -72,9 +72,8 @@ func (c *Client) RegisterResource(id msg.ResourceId, method string) error {
 // Standard transfer calls
 
 func (c *Client) InitiateNativeTransfer(amount types.U128, recipient []byte, destId msg.ChainId) error {
-	fmt.Println("---- Initiate Native Transfer ----")
 	log15.Info("Initiating Substrate native transfer", "amount", amount, "recipient", fmt.Sprintf("%x", recipient), "destId", destId)
-	return SubmitTx(c, ExampleTransferNativeMethod, amount, recipient, types.U8(destId))
+	return SubmitTx(c, ERC20BridgeTransferNativeMethod, amount, recipient, types.U8(destId))
 }
 
 // Call creation methods for batching
@@ -116,7 +115,7 @@ func (c *Client) NewRegisterResourceCall(id msg.ResourceId, method string) (type
 }
 
 func (c *Client) NewNativeTransferCall(amount types.U128, recipient []byte, destId msg.ChainId) (types.Call, error) {
-	return types.NewCall(c.Meta, string(ExampleTransferNativeMethod), amount, recipient, types.U8(destId))
+	return types.NewCall(c.Meta, string(ERC20BridgeTransferNativeMethod), amount, recipient, types.U8(destId))
 }
 
 // Utility methods

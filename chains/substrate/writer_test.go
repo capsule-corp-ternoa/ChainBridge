@@ -58,7 +58,7 @@ func TestWriter_ResolveMessage_FungibleProposal(t *testing.T) {
 
 	// Setup message and params
 	var rId [32]byte
-	subtest.QueryConst(t, context.client, "Example", "NativeTokenId", &rId)
+	subtest.QueryConst(t, context.client, "ERC20Bridge", "NativeTokenId", &rId)
 	// Construct the message to initiate a vote
 	amount := big.NewInt(10000000)
 	m := message.NewFungibleTransfer(ForeignChain, ThisChain, 0, amount, rId, context.writerBob.conn.key.PublicKey)
@@ -119,7 +119,7 @@ func TestWriter_ResolveMessage_FungibleProposal(t *testing.T) {
 func TestWriter_ResolveMessage_Duplicate(t *testing.T) {
 	// Setup message and params
 	var rId [32]byte
-	subtest.QueryConst(t, context.client, "Example", "NativeTokenId", &rId)
+	subtest.QueryConst(t, context.client, "ERC20Bridge", "NativeTokenId", &rId)
 	// Construct the message to initiate a vote
 	amount := big.NewInt(10000000)
 	context.latestInNonce++
