@@ -96,7 +96,7 @@ func (w *writer) createErc20Proposal(m msg.Message) bool {
 	if !w.shouldVote(m, dataHash) {
 		if w.proposalIsPassed(m.Source, m.DepositNonce, dataHash) {
 			// We should not vote for this proposal but it is ready to be executed
-			// w.executeProposal(m, data, dataHash)
+			w.executeProposal(m, data, dataHash)
 			return true
 		} else {
 			return false
@@ -112,7 +112,7 @@ func (w *writer) createErc20Proposal(m msg.Message) bool {
 	fmt.Println("LatestBlock: ", latestBlock)
 
 	// watch for execution event
-	// go w.watchThenExecute(m, data, dataHash, latestBlock)
+	go w.watchThenExecute(m, data, dataHash, latestBlock)
 
 	w.voteProposal(m, dataHash)
 
