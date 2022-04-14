@@ -119,6 +119,13 @@ type EventBalancesWithdraw struct {
 	Topics  []types.Hash
 }
 
+// EventMandate is emitted when a mandate root op call is made
+type EventMandateRootOp struct {
+	Phase  types.Phase
+	Result types.DispatchResult
+	Topics []types.Hash
+}
+
 type Events struct {
 	types.EventRecords
 	events.Events
@@ -131,6 +138,7 @@ type Events struct {
 	Council_MemberExecuted           []types.EventCollectiveMemberExecuted //nolint:stylecheck,golint
 	Council_Closed                   []types.EventCollectiveClosed         //nolint:stylecheck,golint
 	Fees_FeeChanged                  []EventFeeChanged                     //nolint:stylecheck,golint
+	Mandate_RootOp                   []EventMandateRootOp                  //nolint:stylecheck,golint
 	MultiAccount_NewMultiAccount     []EventNewMultiAccount                //nolint:stylecheck,golint
 	MultiAccount_MultiAccountUpdated []EventMultiAccountUpdated            //nolint:stylecheck,golint
 	MultiAccount_MultiAccountRemoved []EventMultiAccountRemoved            //nolint:stylecheck,golint
